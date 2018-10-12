@@ -74,6 +74,7 @@ These commands are available only in CMake projects.
    /command/add_compile_options
    /command/add_custom_command
    /command/add_custom_target
+   /command/add_cxx_module
    /command/add_definitions
    /command/add_dependencies
    /command/add_executable

@@ -107,3 +107,16 @@ else()
     _record_compiler_features(CXX "" CMAKE_CXX_COMPILE_FEATURES)
   endmacro()
 endif()
+
+if (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 4.0.0)
+  # Set up how compiling C++ Modules work with Clang.
+  set(CMAKE_CXX_MODULE_BINARY_DIR
+    "${CMAKE_BINARY_DIR}/clang-${CMAKE_CXX_COMPILER_VERSION}-${CMAKE_CXX_LIBRARY_ARCHITECTURE}-modules/")
+
+  set(CMAKE_CXX_MODULE_BINARY_EXTENSION ".pcm")
+
+  set(CMAKE_CXX_MODULE_FLAGS
+    -fmodules-ts -fprebuilt-module-path=${CMAKE_CXX_MODULE_BINARY_DIR})
+  set(CMAKE_CXX_MODULE_FLAGS_COMPILE
+    ${CMAKE_CXX_MODULE_FLAGS} --precompile)
+endif()

@@ -7,6 +7,7 @@
 #include "cmAddCompileDefinitionsCommand.h"
 #include "cmAddCustomCommandCommand.h"
 #include "cmAddCustomTargetCommand.h"
+#include "cmAddCxxModuleCommand.h"
 #include "cmAddDefinitionsCommand.h"
 #include "cmAddDependenciesCommand.h"
 #include "cmAddExecutableCommand.h"
@@ -214,6 +215,7 @@ void GetProjectCommands(cmState* state)
   state->AddBuiltinCommand("add_custom_command",
                            new cmAddCustomCommandCommand);
   state->AddBuiltinCommand("add_custom_target", new cmAddCustomTargetCommand);
+  state->AddBuiltinCommand("add_cxx_module", new cmAddCxxModuleCommand);
   state->AddBuiltinCommand("add_definitions", new cmAddDefinitionsCommand);
   state->AddBuiltinCommand("add_dependencies", new cmAddDependenciesCommand);
   state->AddBuiltinCommand("add_executable", new cmAddExecutableCommand);
@@ -320,6 +322,7 @@ void GetProjectCommandsInScriptMode(cmState* state)
   CM_UNEXPECTED_PROJECT_COMMAND("add_compile_options");
   CM_UNEXPECTED_PROJECT_COMMAND("add_custom_command");
   CM_UNEXPECTED_PROJECT_COMMAND("add_custom_target");
+  CM_UNEXPECTED_PROJECT_COMMAND("add_cxx_module");
   CM_UNEXPECTED_PROJECT_COMMAND("add_definitions");
   CM_UNEXPECTED_PROJECT_COMMAND("add_dependencies");
   CM_UNEXPECTED_PROJECT_COMMAND("add_executable");

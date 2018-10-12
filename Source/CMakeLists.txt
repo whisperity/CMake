@@ -388,6 +388,8 @@ set(SRCS
   cmAddCustomCommandCommand.h
   cmAddCustomTargetCommand.cxx
   cmAddCustomTargetCommand.h
+  cmAddCxxModuleCommand.cxx
+  cmAddCxxModuleCommand.h
   cmAddDefinitionsCommand.cxx
   cmAddDefinitionsCommand.h
   cmAddDependenciesCommand.cxx

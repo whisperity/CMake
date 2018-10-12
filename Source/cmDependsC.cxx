@@ -12,7 +12,7 @@
 #include "cmSystemTools.h"
 
 #define INCLUDE_REGEX_LINE                                                    \
-  "^[ \t]*[#%][ \t]*(include|import)[ \t]*[<\"]([^\">]+)([\">])"
+  "^[ \t]*[#%]?[ \t]*(include|import)[ \t]*[<\"]?([^\">;]+)([\">;]?)"
 
 #define INCLUDE_REGEX_LINE_MARKER "#IncludeRegexLine: "
 #define INCLUDE_REGEX_SCAN_MARKER "#IncludeRegexScan: "
