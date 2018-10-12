@@ -427,7 +427,37 @@ bool cmTargetLinkLibrariesCommand::HandleLibrary(const std::string& lib,
       this->Makefile->IssueMessage(cmake::FATAL_ERROR, e.str());
     }
 
-    this->Target->AddLinkLibrary(*this->Makefile, lib, libRef, llt);
+    if (tgt && tgt->GetPropertyAsBool("IS_CXX_MODULE")) {
+      if (this->Makefile->IsOn(
+            "CMAKE_CXX_MODULE_FLAGS_AT_DEPENDANTS_COMPILATION")) {
+        // For some compilers, the C++ Modules compilation flags must also
+        // appear when compiling the object files which have 'import'
+        // statements.
+        this->Target->InsertCompileOption(
+          this->Makefile->GetSafeDefinition("CMAKE_CXX_MODULE_FLAGS"),
+          this->Makefile->GetBacktrace());
+      }
+
+      if (this->Makefile->IsOn("CMAKE_CXX_MODULE_BINARY_APPEAR_AT_LINKING")) {
+        // And for some compilers, the module's output binary should appear
+        // as a linked library.
+        if (tgt->GetProperty("CXX_MODULE_BINARY_PATH") == nullptr) {
+          std::ostringstream buf;
+          buf << "Attempted to use CXX module " << tgt->GetName()
+              << " but the target did not have 'CXX_MODULE_BINARY_PATH' "
+                 "properly "
+                 "set up.";
+          this->Makefile->IssueMessage(cmake::INTERNAL_ERROR, buf.str());
+          return false;
+        }
+
+        llt = GENERAL_LibraryType;
+        this->Target->AddLinkLibrary(
+          *this->Makefile, tgt->GetProperty("CXX_MODULE_BINARY_PATH"), libRef,
+          llt);
+      }
+    } else
+      this->Target->AddLinkLibrary(*this->Makefile, lib, libRef, llt);
   }
 
   if (warnRemoteInterface) {

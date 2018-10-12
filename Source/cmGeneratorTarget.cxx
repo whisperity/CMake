@@ -573,10 +573,12 @@ const std::string& cmGeneratorTarget::GetObjectName(cmSourceFile const* file)
 const char* cmGeneratorTarget::GetCustomObjectExtension() const
 {
   static std::string extension;
-  const bool has_ptx_extension =
-    this->GetPropertyAsBool("CUDA_PTX_COMPILATION");
-  if (has_ptx_extension) {
+  if (this->GetPropertyAsBool("CUDA_PTX_COMPILATION")) {
     extension = ".ptx";
+    return extension.c_str();
+  } else if (this->GetPropertyAsBool("IS_CXX_MODULE")) {
+    extension =
+      this->Makefile->GetSafeDefinition("CMAKE_CXX_MODULE_BINARY_EXTENSION");
     return extension.c_str();
   }
   return nullptr;

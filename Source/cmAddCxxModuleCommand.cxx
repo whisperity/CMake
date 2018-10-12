@@ -42,7 +42,8 @@ bool cmAddCxxModuleCommand::InitialPass(std::vector<std::string> const& args,
     this->Makefile->GetSafeDefinition("CMAKE_CXX_MODULE_BINARY_DIR");
   const std::string& moduleflags =
     this->Makefile->GetSafeDefinition("CMAKE_CXX_MODULE_FLAGS_COMPILE");
-  if (moduledir.empty() || moduleflags.empty()) {
+  if (!this->Makefile->IsOn("CMAKE_CXX_MODULES_AVAILABLE") ||
+      moduledir.empty() || moduleflags.empty()) {
     this->SetError("using C++ Modules TS requires a C++ compiler that "
                    "supports an experimental implementation of it");
     return false;
@@ -52,6 +53,7 @@ bool cmAddCxxModuleCommand::InitialPass(std::vector<std::string> const& args,
     modulename, cmStateEnums::OBJECT_LIBRARY, {}, true);
   // Set the current target to be compiled as a module.
   trg->InsertCompileOption(moduleflags, this->Makefile->GetBacktrace());
+  trg->SetProperty("IS_CXX_MODULE", "TRUE");
 
   cmSourceFile* src = trg->AddSource(sourcename);
 
@@ -78,6 +80,8 @@ bool cmAddCxxModuleCommand::InitialPass(std::vector<std::string> const& args,
     moduledir,
     modulename +
       this->Makefile->GetSafeDefinition("CMAKE_CXX_MODULE_BINARY_EXTENSION"));
+
+  trg->SetProperty("CXX_MODULE_BINARY_PATH", module_out_path.c_str());
 
   cmCustomCommandLines commands;
 

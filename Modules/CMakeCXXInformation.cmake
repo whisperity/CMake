@@ -264,6 +264,11 @@ if(NOT CMAKE_CXX_LINK_EXECUTABLE)
     "<CMAKE_CXX_COMPILER>  <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
 endif()
 
+if(NOT CMAKE_CXX_MODULES_AVAILABLE)
+  # By default consider C++ Modules TS support unavailable.
+  set(CMAKE_CXX_MODULES_AVAILABLE 0)
+endif()
+
 mark_as_advanced(
 CMAKE_VERBOSE_MAKEFILE
 )
